@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using nothinbutdotnetprep.utility;
@@ -7,6 +8,7 @@ namespace nothinbutdotnetprep.collections
     public class MovieLibrary
     {
         IList<Movie> movies;
+        private readonly ISpecification<Movie> published_by_pixar = new PublishedByPixar();
 
         public MovieLibrary(IList<Movie> list_of_movies)
         {
@@ -16,6 +18,17 @@ namespace nothinbutdotnetprep.collections
         public IEnumerable<Movie> all_movies()
         {
             return movies.one_at_a_time();
+        }
+
+        public IEnumerable<Movie> all_movies(ISpecification<Movie> specification)
+        {
+            foreach (var movie in all_movies())
+            {
+                if (specification.IsSatisfiedBy(movie))
+                {
+                    yield return movie;
+                }
+            }
         }
 
         public void add(Movie movie)
@@ -59,14 +72,7 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (this.movies[i].production_studio == ProductionStudio.Pixar ||
-                    this.movies[i].production_studio == ProductionStudio.Disney)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new PublishedByPixarOrDisney());
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_ascending
@@ -128,58 +134,27 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (this.movies[i].production_studio != ProductionStudio.Pixar)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new NotPublishedByPixar());
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (this.movies[i].date_published.Year > year)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new PublishedAfter(year));
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int startingYear, int endingYear)
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (startingYear <= this.movies[i].date_published.Year &&
-                    this.movies[i].date_published.Year <= endingYear)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new PublishedBetweenYears(startingYear, endingYear));
         }
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (this.movies[i].genre == Genre.kids)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new InGenre(Genre.kids));
         }
 
         public IEnumerable<Movie> all_action_movies()
         {
-            var returnVal = new List<Movie>();
-            for (var i = 0; i < this.movies.Count; i++)
-            {
-                if (this.movies[i].genre == Genre.action)
-                    returnVal.Add(this.movies[i]);
-            }
-            return returnVal;
+            return all_movies(new InGenre(Genre.action));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_date_published_descending()
@@ -220,6 +195,78 @@ namespace nothinbutdotnetprep.collections
             }
 
             return temp;
+        }
+    }
+
+    public class InGenre : ISpecification<Movie>
+    {
+        private readonly Genre genre;
+
+        public InGenre(Genre genre)
+        {
+            this.genre = genre;
+        }
+
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.genre == genre;
+        }
+    }
+
+    public class PublishedBetweenYears : ISpecification<Movie>
+    {
+        private readonly int startingYear;
+        private readonly int endingYear;
+
+        public PublishedBetweenYears(int startingYear, int endingYear)
+        {
+            this.startingYear = startingYear;
+            this.endingYear = endingYear;
+        }
+
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.date_published.Year >= startingYear && item.date_published.Year <= endingYear;
+        }
+    }
+
+    public class PublishedAfter : ISpecification<Movie>
+    {
+        private readonly int year;
+
+        public PublishedAfter(int year)
+        {
+            this.year = year;
+        }
+
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.date_published.Year > year;
+        }
+    }
+
+    public class PublishedByPixar : ISpecification<Movie>
+    {
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.production_studio == ProductionStudio.Pixar;
+        }
+    }
+
+    public class NotPublishedByPixar : ISpecification<Movie>
+    {
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.production_studio != ProductionStudio.Pixar;
+        }
+    }
+
+    public class PublishedByPixarOrDisney : ISpecification<Movie>
+    {
+        public bool IsSatisfiedBy(Movie item)
+        {
+            return item.production_studio == ProductionStudio.Pixar
+                || item.production_studio == ProductionStudio.Disney;
         }
     }
 
