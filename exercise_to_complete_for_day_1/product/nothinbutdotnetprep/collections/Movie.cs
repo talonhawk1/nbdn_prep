@@ -1,16 +1,12 @@
 using System;
 using nothinbutdotnetprep.utility.filtering;
 
+namespace nothinbutdotnetprep.utility.filtering
+{
+}
+
 namespace nothinbutdotnetprep.collections
 {
-    public class Where<T>
-    {
-        public static T has_a(Func<T, ProductionStudio> func)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class Movie  : IEquatable<Movie>
     {
         public string title { get; set; }
