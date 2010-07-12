@@ -3,6 +3,14 @@ using nothinbutdotnetprep.utility.filtering;
 
 namespace nothinbutdotnetprep.collections
 {
+    public class Where<T>
+    {
+        public static T has_a(Func<T, ProductionStudio> func)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class Movie  : IEquatable<Movie>
     {
         public string title { get; set; }
@@ -51,6 +59,11 @@ namespace nothinbutdotnetprep.collections
         static Criteria<Movie> is_published_after(int year)
         {
             return new IsPublishedAfter(year);
+        }
+
+        public Criteria<Movie> equal_to(ProductionStudio studio)
+        {
+            return new IsPublishedBy(studio);
         }
     }
 }
