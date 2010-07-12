@@ -14,7 +14,7 @@ namespace nothinbutdotnetprep.utility.filtering
 
     public class CriteriaFactory<ItemToFilter, PropertyType>
     {
-        public Criteria<ItemToFilter> equal_to(ProductionStudio pixar)
+        public Criteria<ItemToFilter> equal_to(PropertyType value)
         {
             throw new NotImplementedException();
         }
