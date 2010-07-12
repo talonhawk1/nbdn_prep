@@ -73,7 +73,8 @@ namespace nothinbutdotnetprep.specs
             Because b = () =>
                 number_of_movies = sut.all_movies().Count();
 
-            It should_return_the_number_of_all_movies_in_the_library = () => { number_of_movies.ShouldEqual(2); };
+            It should_return_the_number_of_all_movies_in_the_library = () =>
+                number_of_movies.ShouldEqual(2);
         }
 
         [Subject(typeof(MovieLibrary))]
@@ -81,7 +82,7 @@ namespace nothinbutdotnetprep.specs
         {
             static Movie first_movie;
             static Movie second_movie;
-            static IEnumerable<Movie> all_movies;
+            static IEnumerable<Movie> result;
 
             Establish c = () =>
             {
@@ -91,10 +92,11 @@ namespace nothinbutdotnetprep.specs
                 movie_collection.add_all(first_movie, second_movie);
             };
 
-            Because b = () => { all_movies = sut.all_movies(); };
+            Because b = () => 
+                result = sut.all_movies(); 
 
             It should_receive_a_set_containing_each_movie_in_the_library =
-                () => { all_movies.ShouldContainOnly(first_movie, second_movie); };
+                () => { result.ShouldContainOnly(first_movie, second_movie); };
         }
 
         [Subject(typeof(MovieLibrary))]
@@ -109,6 +111,7 @@ namespace nothinbutdotnetprep.specs
                 first_movie = new Movie();
                 second_movie = new Movie();
                 movie_collection.add_all(first_movie, second_movie);
+
             };
 
             Because b = () =>
