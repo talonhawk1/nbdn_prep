@@ -7,7 +7,7 @@ local_settings = LocalSettings.new
 mspec_options = []
 
 COMPILE_TARGET = 'debug'
-CLEAN.include("artifacts/*.*",'**/bin','**/obj')
+CLEAN.include("artifacts",'**/bin','**/obj')
 
 
 #target folders that can be run from VS
@@ -19,6 +19,8 @@ output_folders = [project_startup_dir,project_test_dir]
 task :default => ["specs:run"]
 
 task :init  => :clean do
+  mkdir "artifacts"
+  mkdir "artifacts/specs"
   cp_r "thirdparty/machine.specifications/.","artifacts"
 end
 
