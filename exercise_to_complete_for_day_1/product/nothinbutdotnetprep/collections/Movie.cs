@@ -1,4 +1,5 @@
 using System;
+using nothinbutdotnetprep.utility.filtering;
 
 namespace nothinbutdotnetprep.collections
 {
@@ -30,6 +31,26 @@ namespace nothinbutdotnetprep.collections
         public override int GetHashCode()
         {
             return title.GetHashCode();
+        }
+
+        public static Criteria<Movie> is_published_by_pixar
+        {
+            get { return new IsPublishedBy(ProductionStudio.Pixar); }
+        }
+
+        public static Criteria<Movie> is_published_by_pixar_or_disney
+        {
+            get
+            {
+                return new IsPublishedBy(ProductionStudio.Pixar).or(
+                    new IsPublishedBy(ProductionStudio.Disney));
+            }
+        }
+
+
+        static Criteria<Movie> is_published_after(int year)
+        {
+            return new IsPublishedAfter(year);
         }
     }
 }
