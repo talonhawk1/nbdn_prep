@@ -75,6 +75,7 @@ namespace nothinbutdotnetprep.specs
             Because b = () =>
                 number_of_movies = sut.all_movies().Count();
 
+  
             It should_return_the_number_of_all_movies_in_the_library = () =>
                 number_of_movies.ShouldEqual(2);
         }
@@ -207,11 +208,11 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_find_all_movies_not_published_by_pixar = () =>
             {
-                var results = sut.all_movies().all_items_matching(
-                    Where<Movie>.has_a(x => x.production_studio).not.equal_to(ProductionStudio.Pixar));
+//                var results = sut.all_movies().all_items_matching(
+//                    Where<Movie>.has_a(x => x.production_studio).not.equal_to(ProductionStudio.Pixar));
                     
 
-                results.ShouldNotContain(cars, a_bugs_life);
+//                results.ShouldNotContain(cars, a_bugs_life);
             };
 
             It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
@@ -225,8 +226,7 @@ namespace nothinbutdotnetprep.specs
             It should_be_able_to_find_all_movies_published_between_a_certain_range_of_years = () =>
             {
                 var results = sut.all_movies().all_items_matching(
-                    Where<Movie>.has_an(movie => movie.date_published.Year)
-                                .between(1982,2003));
+                    Where<Movie>.has_an(movie => movie.date_published.Year).between(1982,2003));
 
                 results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, a_bugs_life, pirates_of_the_carribean);
             };

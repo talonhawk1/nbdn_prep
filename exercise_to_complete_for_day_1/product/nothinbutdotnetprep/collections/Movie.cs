@@ -46,8 +46,8 @@ namespace nothinbutdotnetprep.collections
         {
             get
             {
-                return new IsPublishedBy(ProductionStudio.Pixar).or(
-                    new IsPublishedBy(ProductionStudio.Disney));
+                return Where<Movie>.has_a(x => x.production_studio)
+                    .equal_to_any(ProductionStudio.Pixar, ProductionStudio.Disney);
             }
         }
 

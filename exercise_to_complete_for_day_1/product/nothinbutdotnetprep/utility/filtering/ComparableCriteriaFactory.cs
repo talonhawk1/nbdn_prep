@@ -1,4 +1,5 @@
 ﻿using System;
+using nothinbutdotnetprep.utility.range;
 
 namespace nothinbutdotnetprep.utility.filtering
 {
@@ -44,6 +45,12 @@ namespace nothinbutdotnetprep.utility.filtering
         {
             return new PropertyCriteria<ItemToFilter, PropertyType>(accessor,
                                                                     new IsBetween<PropertyType>(start, end));
+        }
+
+        public Criteria<ItemToFilter> falls_in(Range<PropertyType> range)
+        {
+            return new PropertyCriteria<ItemToFilter, PropertyType>(
+                accessor, new FallsInRange<PropertyType>(range)); 
         }
     }
 }
