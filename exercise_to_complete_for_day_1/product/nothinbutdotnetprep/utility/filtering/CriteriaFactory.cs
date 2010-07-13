@@ -19,7 +19,9 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public Criteria<ItemToFilter> equal_to_any(params PropertyType[] values)
         {
-            throw new NotImplementedException();
+                Criteria<ItemToFilter> left = new AnonymousCriteria<ItemToFilter>(item => accessor(item).Equals(values[0]));
+                Criteria<ItemToFilter> right = new AnonymousCriteria<ItemToFilter>(item => accessor(item).Equals(values[1]));
+                return new OrCriteria<ItemToFilter>(left,right);
         }
     }
 }
