@@ -16,4 +16,19 @@ namespace nothinbutdotnetprep.utility.filtering
             return values.Contains(item);
         }
     }
+
+    public class IsNotEqualTo<T> : Criteria<T>
+    {
+        private T value;
+
+        public IsNotEqualTo(T item)
+        {
+            this.value = item;
+        }
+
+        public bool is_satisfied_by(T item)
+        {
+            return !value.Equals(item);
+        }
+    }
 }
