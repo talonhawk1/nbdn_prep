@@ -21,8 +21,8 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public Criteria<ItemToFilter> greater_than(PropertyType value)
         {
-            return new AnonymousCriteria<ItemToFilter>(item =>
-                                                           accessor(item).CompareTo(value) > 0);
+            return new PropertyCriteria<ItemToFilter, PropertyType>(accessor,
+                                                                    new GreaterThan<PropertyType>(value));
         }
 
         public Criteria<ItemToFilter> equal_to(PropertyType value)
@@ -42,12 +42,8 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public Criteria<ItemToFilter> between(PropertyType start, PropertyType end)
         {
-            return new AnonymousCriteria<ItemToFilter>(item =>
-            {
-                var value = accessor(item);
-                return value.CompareTo(start) >= 0 &&
-                    value.CompareTo(end) <= 0;
-            });
+            return new PropertyCriteria<ItemToFilter, PropertyType>(accessor,
+                                                                    new IsBetween<PropertyType>(start, end));
         }
     }
 }

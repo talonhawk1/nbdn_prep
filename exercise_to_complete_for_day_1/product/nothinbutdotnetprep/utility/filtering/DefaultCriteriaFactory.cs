@@ -14,12 +14,13 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public Criteria<ItemToFilter> equal_to(PropertyType value)
         {
-            return new AnonymousCriteria<ItemToFilter>(item => accessor(item).Equals(value));
+            return equal_to_any(value);
         }
 
         public Criteria<ItemToFilter> equal_to_any(params PropertyType[] values)
         {
-            return new AnonymousCriteria<ItemToFilter>(item => { return new List<PropertyType>(values).Contains(accessor(item)); });
+            return new PropertyCriteria<ItemToFilter, PropertyType>(
+                accessor, new IsEqualToAny<PropertyType>(values));
         }
 
         public Criteria<ItemToFilter> not_equal_to(PropertyType value)

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using nothinbutdotnetprep.utility;
-using nothinbutdotnetprep.utility.filtering;
 
 namespace nothinbutdotnetprep.collections
 {
@@ -17,11 +15,6 @@ namespace nothinbutdotnetprep.collections
         public IEnumerable<Movie> all_movies()
         {
             return movies.one_at_a_time();
-        }
-
-        public IEnumerable<Movie> all_movies_matching(Criteria<Movie> criteria)
-        {
-            return movies.all_items_matching(criteria);
         }
 
         public void add(Movie movie)
@@ -56,16 +49,6 @@ namespace nothinbutdotnetprep.collections
                 }
                 return temp;
             }
-        }
-
-        public IEnumerable<Movie> all_movies_published_by_pixar()
-        {
-            return all_movies_matching(Movie.is_published_by_pixar);
-        }
-
-        public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
-        {
-            return all_movies_matching(Movie.is_published_by_pixar_or_disney);
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_ascending
@@ -123,34 +106,6 @@ namespace nothinbutdotnetprep.collections
                 }
             }
             return temp;
-        }
-
-        public IEnumerable<Movie> all_movies_not_published_by_pixar()
-        {
-            return
-                all_movies_matching(
-                    new AnonymousCriteria<Movie>(item => item.production_studio != ProductionStudio.Pixar));
-        }
-
-        public IEnumerable<Movie> all_movies_published_after(int year)
-        {
-            return all_movies_matching(new AnonymousCriteria<Movie>(item => item.date_published.Year > year));
-        }
-
-        public IEnumerable<Movie> all_movies_published_between_years(int starting_year, int endin)
-        {
-            return all_movies_matching(new AnonymousCriteria<Movie>(item => item.date_published.Year >= starting_year &&
-                item.date_published.Year <= endin));
-        }
-
-        public IEnumerable<Movie> all_kid_movies()
-        {
-            return all_movies_matching(new AnonymousCriteria<Movie>(item => item.genre == Genre.kids));
-        }
-
-        public IEnumerable<Movie> all_action_movies()
-        {
-            return all_movies_matching(new AnonymousCriteria<Movie>(item => item.genre == Genre.action));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_date_published_descending()
